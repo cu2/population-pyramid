@@ -1,10 +1,15 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 
+import { SimState } from '../index';
 import { State } from '../model';
 
 
-const VisualizationComponent = ({ state }: any) => {
+interface VisualizationProps {
+  state: State;
+}
+
+const VisualizationComponent = ({ state }: VisualizationProps) => {
   return <div>
     <p>Total population of year {state.year} = {Math.round(state.pyramid.reduce((a: number, b: number) => a + b, 0))}</p>
     <pre>
@@ -15,5 +20,9 @@ const VisualizationComponent = ({ state }: any) => {
   </div>;
 };
 export const Visualization = connect(
-  (state: State) => { return { state }; },
+  (simState: SimState) => {
+    return {
+      state: simState.modelState,
+    };
+  },
 )(VisualizationComponent);

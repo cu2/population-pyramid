@@ -1,19 +1,42 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 
-import { State } from '../model';
+import { SimState } from '../index';
 
 
-const ControlsComponent = ({ onReset }: any) => {
+interface ControlsProps {
+  isRunning: boolean;
+  onReset: Function;
+  onPlay: Function;
+  onPause: Function;
+  onStep: Function;
+}
+
+const ControlsComponent = (props: ControlsProps) => {
   return <div>
-    <button onClick={ () => onReset() }>Reset</button>
+    <button onClick={ () => props.onReset() }>Reset</button>
+    { props.isRunning ? (
+      <button onClick={ () => props.onPause() }>Pause</button>
+    ) : (
+      <span>
+        <button onClick={ () => props.onPlay() }>Play</button>
+        <button onClick={ () => props.onStep() }>Step</button>
+      </span>
+    ) }
   </div>;
 };
 export const Controls = connect(
-  (state: State) => { return {}; },
+  (simState: SimState) => {
+    return {
+      isRunning: simState.isRunning,
+    };
+  },
   (dispatch: any) => {
     return {
       onReset: () => dispatch({ type: 'reset' }),
+      onPlay: () => dispatch({ type: 'play' }),
+      onPause: () => dispatch({ type: 'pause' }),
+      onStep: () => dispatch({ type: 'next' }),
     };
   },
 )(ControlsComponent);
