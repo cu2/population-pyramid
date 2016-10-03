@@ -4,18 +4,20 @@ export interface State {
 }
 
 const parameters: any = {
-  maxAge: 100,
+  maxAge: 99,
   firstBirth: 20,
   lastBirth: 40,
-  birthRate: 0.3,
+  birthRate: (totalPop: number) => {
+    return 6000 / totalPop;
+  },
   deathRate: (age: number) => {
     if (age < 10) {
-      return 0.1;
+      return 0.01;
     }
     if (age > 70) {
-      return 0.2;
+      return 0.02;
     }
-    return 0.04;
+    return 0.005;
   },
 };
 
@@ -26,9 +28,10 @@ export const initialState: State = {
 
 export const getNextState = (state: State) => {
   const pyramid = state.pyramid;
+  const totalPop = state.pyramid.reduce((a: number, b: number) => a + b, 0);
   const newKids = pyramid.map((pop, age) => {
     if (age >= parameters.firstBirth && age <= parameters.lastBirth) {
-      return parameters.birthRate * pop;
+      return parameters.birthRate(totalPop) * pop;
     }
     return 0;
   }).reduce((a, b) => a + b, 0);
