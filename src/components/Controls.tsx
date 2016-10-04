@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 
-import { SimState } from '../index';
+import { SimState, Action } from '../simulation';
 
 
 interface ControlsProps {
@@ -33,10 +33,10 @@ export const Controls = connect(
   },
   (dispatch: any) => {
     return {
-      onReset: () => dispatch({ type: 'reset' }),
-      onPlay: () => dispatch({ type: 'play' }),
-      onPause: () => dispatch({ type: 'pause' }),
-      onStep: () => dispatch({ type: 'next' }),
+      onReset: () => dispatch({ type: Action.RESET }),
+      onPlay: () => dispatch({ type: Action.PLAY }),
+      onPause: () => dispatch({ type: Action.PAUSE }),
+      onStep: () => dispatch({ type: Action.NEXT }),
     };
   },
 )(ControlsComponent);

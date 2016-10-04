@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 
-import { SimState } from '../index';
+import { SimState } from '../simulation';
 
 
 const pad = (num: number) => {
