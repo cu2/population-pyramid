@@ -2,7 +2,6 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 
 import { SimState } from '../index';
-import { State } from '../model';
 
 
 const pad = (num: number) => {
@@ -26,15 +25,16 @@ const getAgeCats = (pyramid: number[]) => {
 };
 
 interface VisualizationProps {
-  state: State;
+  year: number;
+  pyramid: number[];
 }
 
-const VisualizationComponent = ({ state }: VisualizationProps) => {
-  const ageCats = getAgeCats(state.pyramid);
+const VisualizationComponent = ({ year, pyramid }: VisualizationProps) => {
+  const ageCats = getAgeCats(pyramid);
   const maxAgeCat = ageCats.length - 1;
-  const totalPop = state.pyramid.reduce((a: number, b: number) => a + b, 0);
+  const totalPop = pyramid.reduce((a: number, b: number) => a + b, 0);
   return <div>
-    <p>Total population of year {state.year} = {Math.round(totalPop)}</p>
+    <p>Total population of year {year} = {Math.round(totalPop)}</p>
     <pre>
       {ageCats.reverse().map((pop: number, revAgeCat: number) => {
         const ageCat = maxAgeCat - revAgeCat;
@@ -46,7 +46,8 @@ const VisualizationComponent = ({ state }: VisualizationProps) => {
 export const Visualization = connect(
   (simState: SimState) => {
     return {
-      state: simState.modelState,
+      year: simState.modelState.year,
+      pyramid: simState.modelState.pyramid,
     };
   },
 )(VisualizationComponent);
